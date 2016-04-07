@@ -36,6 +36,7 @@ function cropHorizontal(matrix, center, width, height, method) {
   
   return {
     method: method,
+    matrix: matrix,
     left: left,
     right: right,
     top: 0,
@@ -51,6 +52,7 @@ function cropVertical(matrix, center, width, height, method) {
   
   return {
     method: method,
+    matrix: matrix,
     left: 0,
     right: matrix.width(),
     top: top,
