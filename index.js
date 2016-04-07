@@ -7,7 +7,7 @@ module.exports = function smartCrop(options, callback) {
   opencv.readImage(options.image, function(err, matrix) {
     if (err) return callback(err);
 
-    centerFromFaces(matrix, function(err, center) {
+    centerFromFaces(matrix, options.debug, function(err, center) {
       if (err) return callback(err);
 
       var method;
@@ -58,9 +58,10 @@ function cropVertical(matrix, center, width, height, method) {
   }
 }
 
-function centerFromFaces(matrix, callback) {
+function centerFromFaces(matrix, debug, callback) {
   centerFromFacesQueue.add({
     matrix: matrix,
+    debug: debug,
     callback: callback
   });
 }
@@ -80,6 +81,8 @@ function _centerFromFaces(options, done) {
     var x = 0;
     var y = 0;
     faces.forEach(function(face) {
+      if (options.debug)
+          options.matrix.rectangle([face.x, face.y], [face.width, face.height], [0,0,255], 3);
       weight = weight + face.width * face.height;
       x = x + (face.x + face.width / 2) * face.width * face.height;
       y = y + (face.y + face.height / 2) * face.width * face.height;
